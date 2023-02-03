@@ -1,0 +1,21 @@
+<launch>
+
+<node name="kitti_mapgen" pkg="erasor" type="kitti_mapgen" output="screen">
+    <rosparam param="/map/voxelsize">0.2</rosparam>		
+    <rosparam param="/map/target_rosbag">"05_2350_to_2670_w_interval_2_node.bag"</rosparam>
+    <!-- ！！！！save_path 看一下 -->
+    <rosparam param="/map/save_path">"/mnt/d/dataset/dynamic_self/test"</rosparam>  
+    <rosparam param="/map/dataset_name">"machi"</rosparam>
+    <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/velodyne"</rosparam>
+    <rosparam param="/map/poses_url">"/mnt/d/dataset/dynamic_self/test/machi/0203_at18_27_15/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"</rosparam>
+    <rosparam param="/map/start_timestamp">1672817424.0</rosparam>
+    <rosparam param="/map/end_timestamp">1672817687.0</rosparam>
+    
+    <rosparam param="/map/viz_interval">1</rosparam>
+    <rosparam param="/large_scale/is_large_scale">true</rosparam>
+</node>
+
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find erasor)/rviz/kitti_mapgen.rviz"/>
+
+</launch>
