@@ -257,13 +257,17 @@ int main(int argc, char **argv) {
         pcl::PointCloud<pcl::PointXYZI> cloud_raw;
         fstream input(cloud_file_name.c_str(), ios::in | ios::binary);
         
-        for (int i = 0; input.good() && !input.eof(); i++) {
+        while (input.good()) {
           pcl::PointXYZI point;
           input.read((char *)&point.x, 3 * sizeof(float));
           input.read((char *)&point.intensity, sizeof(float));
+          if (input.eof()) {
+            break;
+          }
           cloud_raw.push_back(point);
         }
         input.close();
+
 
         // 处理和SLAM一致
         CloudXYZI cloud;
