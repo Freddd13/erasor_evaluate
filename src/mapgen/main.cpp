@@ -167,6 +167,11 @@ void SaveGRLOAMSpecificFilterIndexMapping(const pcl::PointCloud<pcl::PointXYZI> 
 }
 
 
+/*
+思路：
+根据corr(timestamps.txt)读SLAM给出的位姿和对应全点云,拼接地图即可
+*/
+
 int main(int argc, char **argv) {
   ros::init(argc, argv, "merger");
   ros::NodeHandle nodeHandler;

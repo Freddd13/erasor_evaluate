@@ -98,6 +98,12 @@ add_dependencies(main_in_your_env_ros erasor_generate_messages_cpp)
 add_executable(compare_map src/compare_map.cpp src/offline_map_updater/src/erasor_utils.cpp)
 target_link_libraries(compare_map ${catkin_LIBRARIES})
 
-add_executable(kitti_mapgen src/mapgen/main.cpp src/mapgen/mapgen.hpp src/offline_map_updater/src/erasor_utils.cpp)
-target_link_libraries(kitti_mapgen ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-add_dependencies(kitti_mapgen erasor_generate_messages_cpp)
+add_executable(gt_mapgen src/mapgen/main.cpp src/mapgen/mapgen.hpp src/offline_map_updater/src/erasor_utils.cpp)
+target_link_libraries(gt_mapgen stdc++fs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(gt_mapgen erasor_generate_messages_cpp)
+
+
+
+add_executable(slam_mapgen src/mapgen/map_gen_slam_frontend_main.cpp src/mapgen/mapgen.hpp src/offline_map_updater/src/erasor_utils.cpp)
+target_link_libraries(slam_mapgen stdc++fs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(slam_mapgen erasor_generate_messages_cpp)

@@ -17,9 +17,9 @@ erasor:
 
 MapUpdater:
     data_name: "machi"
-    initial_map_path: "/mnt/d/dataset/dynamic_self/test/machi/_voxel_0.200000.pcd"
+    initial_map_path: "/mnt/d/dataset/dynamic_self/test/machi_gt_full/_voxel_0.200000.pcd"
     env: "outdoor"
-    save_path: "/mnt/d/dataset/dynamic_self/test"
+    save_path: "/mnt/d/dataset/dynamic_self/test/erasor"
     query_voxel_size: 0.075
     map_voxel_size: 0.075 
     voxelization_interval: 2

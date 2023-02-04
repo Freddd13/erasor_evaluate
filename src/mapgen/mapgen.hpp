@@ -365,7 +365,9 @@ class mapgen {
     cloud_out.height = 1;
     std::cout << "[Debug]: " << cloud_out.width << ", " << cloud_out.height
               << ", " << cloud_out.points.size() << std::endl;
-    std::cout << "\033[1;32m Saving the map to pcd...\033[0m" << std::endl;
+    std::cout << "\033[1;32m Saving the map to pcd... at " << map_dir << "\033[0m" << std::endl;
+
+
     pcl::io::savePCDFileASCII(map_dir, cloud_out);
     std::cout << "\033[1;32m Complete to save the map!:";
     std::cout << map_dir << "\033[0m" << std::endl;
