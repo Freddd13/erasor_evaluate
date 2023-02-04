@@ -212,13 +212,14 @@ int main(int argc, char **argv) {
   while (f_read_corr >> cloud_name_corr >> t_corr) {
     corr_data[t_corr] = cloud_name_corr;  // input them into the map
   }
+  f_read_corr.close();
   std::cout << "read map success" << std::endl;
   // for (auto&element : corr_data){
   //   std::cout << element.first << " " << element.second << std::endl;
   // }
 
   ////////////// 读pose ////////////////////////
-  if (f_read_pose.is_open() && f_read_corr.is_open()) {
+  if (f_read_pose.is_open()) {
     printf("begin load pose... \n");
     char line[1024];
     Eigen::Matrix4f pose_eigen4f = Eigen::Matrix4f::Identity();
@@ -314,15 +315,6 @@ int main(int argc, char **argv) {
     saveGlobalMap();
   }
   f_read_pose.close();
-
-  // int num = 0;
-  // for (const auto &entry : fs::directory_iterator(pose_url)) {
-  //   std::cout << entry.path() << std::endl;
-  //   num++;
-  // }
-
-  // for () {
-  // }
 
   return 0;
 }
