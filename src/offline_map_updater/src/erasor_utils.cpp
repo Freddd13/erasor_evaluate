@@ -81,6 +81,7 @@ namespace erasor_utils {
         /**< IMPORTANT
          * Because PCL voxlizaiton just does average the intensity of point cloud,
          * so this function is to conduct voxelization followed by nearest points search to re-assign the label of each point */
+
         pcl::PointCloud<pcl::PointXYZI>::Ptr ptr_voxelized(new pcl::PointCloud<pcl::PointXYZI>);
         pcl::PointCloud<pcl::PointXYZI>::Ptr ptr_reassigned(new pcl::PointCloud<pcl::PointXYZI>);
 

@@ -294,9 +294,13 @@ class mapgen {
     pcl::PointCloud<pcl::PointXYZI>::Ptr world_transformed(
         new pcl::PointCloud<pcl::PointXYZI>);
     pcl::transformPointCloud(cloud, *world_transformed, pose);
+    // assert (cloud.size()!=0);
+    // std::cout << cloud.size() << std::endl;
+    // std::cout << world_transformed->size() << std::endl;
 
     erasor_utils::voxelize_preserving_labels(world_transformed, cloud_curr,
                                              0.2);
+    // std::cout << cloud_curr.size() << std::endl;
 
     if (is_initial) {
       cloud_map = cloud_curr;
