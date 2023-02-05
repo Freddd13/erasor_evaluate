@@ -1,9 +1,15 @@
+/*** 
+ * @Date: 2023-02-05 07:48:31
+ * @LastEditors: yxt
+ * @LastEditTime: 2023-02-05 08:17:04
+ * @Description: 
+ */
 #include <experimental/filesystem>  // requires gcc version >= 8
+#include "kumo.h"
 #include "mapgen.hpp"
 #include "pcl/impl/point_types.hpp"
 #include "pcl/io/pcd_io.h"
 #include "pcl/point_cloud.h"
-#include "kumo.h"
 #include "kumo_process.hpp"
 namespace fs = std::experimental::filesystem;
 
@@ -42,7 +48,6 @@ void saveGlobalMap() {
 
   mapgenerator.saveNaiveMap(original_dir, map_dir);
 }
-
 
 /*
 思路：
@@ -114,8 +119,7 @@ int main(int argc, char **argv) {
         if (!time_init) {
           time_init = true;
           timestamp = p;
-        }
-        else {
+        } else {
           pose.push_back(atof(p));
         }
         p = strtok(NULL, " ");
@@ -134,10 +138,11 @@ int main(int argc, char **argv) {
         // std::cout << cloud_file_name << std::endl;
 
 
-        // 这里是bin，不能用pcl的函数
+
+        // 这里是bin，不能用pcl的函数  
         pcl::PointCloud<pcl::PointXYZI> cloud_raw;
         fstream input(cloud_file_name.c_str(), ios::in | ios::binary);
-        
+
         while (input.good()) {
           pcl::PointXYZI point;
           input.read((char *)&point.x, 3 * sizeof(float));
@@ -150,11 +155,15 @@ int main(int argc, char **argv) {
         input.close();
 
 
+
         // 处理和SLAM一致
         CloudXYZI cloud;
         std::vector<int> _;
         pcl::removeNaNFromPointCloud(cloud_raw, cloud_raw, _);
-        SaveGRLOAMSpecificFilterIndexMapping(cloud_raw,cloud, 0.5, 80);
+
+        SaveGRLOAMSpecificFilterIndexMapping(cloud_raw, cloud, 0.5, 80);
+
+
         // std::cout << "re after " << cloud.size() << std::endl;
 
         // for (auto&pt:cloud.points) {
@@ -164,8 +173,8 @@ int main(int argc, char **argv) {
         //   }
         // }
 
-        if (cloud.size()==0) {
-          std::cout << cloud_file_name << " nopoints!!!"<< std::endl;
+        if (cloud.size() == 0) {
+          std::cout << cloud_file_name << " nopoints!!!" << std::endl;
           return -1;
         }
 
@@ -197,7 +206,7 @@ int main(int argc, char **argv) {
         continue;
       }
     }
-    saveGlobalMap();
+    // saveGlobalMap();
   }
   f_read_pose.close();
 

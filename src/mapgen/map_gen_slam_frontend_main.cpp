@@ -1,7 +1,7 @@
 /*** 
  * @Date: 2023-02-04 18:52:20
  * @LastEditors: yxt
- * @LastEditTime: 2023-02-04 19:57:13
+ * @LastEditTime: 2023-02-05 10:58:22
  * @Description: 
  */
 #include <experimental/filesystem>  // requires gcc version >= 8
@@ -54,9 +54,10 @@ void saveGlobalMap() {
 
 /*
 思路：
-读SLAM给出的判断的每帧动态点索引文件，读相应的位姿和其全点云。
-由于这里使用了SLAM一样的点云前处理，就不需要index mapping，它处理后可以直接使用动态索引
-将SLAM的结果标注到读入全点云的intensity上，拼接地图即可
+读SLAM给出的判断的每帧动态点索引文件，读相应的位姿和其全点云。 这里直接从带intensity的bin中读
+由于这里使用了SLAM一样的点云前处理，就不需要index mapping，它处理后可以直接使用动态索引.
+将slam认为的非动态点云保存下来作为保留地图，由于其intensity来自GT bin，起到了自带标签的效果，可以直接生成结果地图
+这和ERASOR给出的点云应该是一致的，可以用来评估pr rr
 */
 
 
@@ -87,7 +88,6 @@ int main(int argc, char **argv) {
   mapgenerator.setValue(slam_map_save_path, voxelsize, dataset_name, "1", "1", interval, is_large_scale);
 
   slam_map_save_path = (slam_map_save_path.back() == '/') ? slam_map_save_path : (slam_map_save_path + "/");
-  dataset_name = (dataset_name.back() == '/') ? dataset_name : (dataset_name + "/");
   cloud_bin_dir = (cloud_bin_dir.back() == '/') ? cloud_bin_dir : (cloud_bin_dir + "/");
   slam_dynamic_indices_dir =
       (slam_dynamic_indices_dir.back() == '/') ? slam_dynamic_indices_dir : (slam_dynamic_indices_dir + "/");
@@ -150,6 +150,7 @@ int main(int argc, char **argv) {
         std::cout << "skip " << timestamp << " for lack of slam data" << std::endl;
         continue;
       }
+      
 
       // 读corr
       if (corr_data.count(timestamp)) {
@@ -161,12 +162,12 @@ int main(int argc, char **argv) {
           std::cout << "!!!skip " << timestamp << " for lack of cloud data " << cloud_file_name << std::endl;
           continue;
         }
+  
 
+        // 读入全点云
         // 这里是bin，不能用pcl的函数
         pcl::PointCloud<pcl::PointXYZI> cloud_raw;
         fstream input(cloud_file_name.c_str(), ios::in | ios::binary);
-
-        // 读入全点云
         int index_original = 0;
         while (input.good()) {
           pcl::PointXYZI point;
@@ -192,16 +193,31 @@ int main(int argc, char **argv) {
 
         // 读入slam dynamic indices, 并赋值相应intensity
         std::ifstream f_slam_dynamic_indices(url_slam_dynamic_indices);
+        // std::cout << url_slam_dynamic_indices << std::endl;
         std::vector<int> data_slam_dynamic_indices;  //记录了动态索引
+        std::vector<bool> is_dynamic_vec(cloud.size(),false);  //记录了动态索引
         int element;
         int num_dynamic = 0;
+        int last_dynamic_index = 0;
         while (f_slam_dynamic_indices >> element) {
+          // std::cout << element << "is dynamic!!!" << std::endl;
           // data_slam_dynamic_indices.push_back(element);
+          is_dynamic_vec[element] = true;
           num_dynamic++;
-          cloud.points[element].intensity = 254;//TODO
         }
-        // std::cout << " num_dynamic " << num_dynamic << std::endl;
 
+        CloudXYZI cloud_perserved_slam;
+        // create new cloud_perserved_slam
+        for (int i = 0; i < cloud.size();i++) {
+          if (!is_dynamic_vec[i]) {
+            cloud_perserved_slam.push_back(cloud.points[i]);
+          }
+        }
+
+
+        // std::cout << " num_dynamic " << num_dynamic << std::endl;
+        // // std::cout <<" cloud_nums, original " <<  cloud_raw.size() << "slam: " << cloud.size() << ", preserved: " << cloud_perserved_slam.size() << std::endl;
+        // break;
 
         // 读pose
         pose_eigen4f(0, 0) = pose[0];
@@ -217,7 +233,7 @@ int main(int argc, char **argv) {
         pose_eigen4f(2, 2) = pose[10];
         pose_eigen4f(2, 3) = pose[11];
 
-        mapgenerator.KumoAccumulateCloud(cloud, pose_eigen4f);
+        mapgenerator.KumoAccumulateCloud(cloud_perserved_slam, pose_eigen4f);
 
         // 送进去！！！！
       } else {

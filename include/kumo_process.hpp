@@ -1,7 +1,7 @@
 /*** 
  * @Date: 2023-02-04 10:50:00
  * @LastEditors: yxt
- * @LastEditTime: 2023-02-04 10:51:18
+ * @LastEditTime: 2023-02-05 08:15:58
  * @Description: 保证点云前处理与SLAM相同
  */
 
@@ -99,6 +99,7 @@ void SaveGRLOAMSpecificFilterIndexMapping(const pcl::PointCloud<pcl::PointXYZI> 
     point.x = cloud_filtered_dist->points[i].x;
     point.y = cloud_filtered_dist->points[i].y;
     point.z = cloud_filtered_dist->points[i].z;
+    point.intensity = cloud_filtered_dist->points[i].intensity;
     // if (use_semantic_poss_) {
     //   point.x = -cloud_filtered_dist.points[i].y;
     //   point.y = cloud_filtered_dist.points[i].x;

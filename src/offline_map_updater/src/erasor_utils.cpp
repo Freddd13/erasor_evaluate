@@ -81,7 +81,6 @@ namespace erasor_utils {
         /**< IMPORTANT
          * Because PCL voxlizaiton just does average the intensity of point cloud,
          * so this function is to conduct voxelization followed by nearest points search to re-assign the label of each point */
-
         pcl::PointCloud<pcl::PointXYZI>::Ptr ptr_voxelized(new pcl::PointCloud<pcl::PointXYZI>);
         pcl::PointCloud<pcl::PointXYZI>::Ptr ptr_reassigned(new pcl::PointCloud<pcl::PointXYZI>);
 
@@ -107,6 +106,9 @@ namespace erasor_utils {
             if (kdtree.nearestKSearch(pt, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0) {
                 auto updated = pt;
                 // Update meaned intensity to original intensity
+                // if (((*src)[pointIdxNKNSearch[0]].intensity)!= 0) {
+                //   std::cout << "intensity before: " << ((*src)[pointIdxNKNSearch[0]].intensity) << std::endl;
+                // }
                 updated.intensity = (*src)[pointIdxNKNSearch[0]].intensity;
                 ptr_reassigned->points.emplace_back(updated);
             }

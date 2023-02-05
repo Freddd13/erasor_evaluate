@@ -191,7 +191,7 @@ void OfflineMapUpdater::save_static_map(float voxel_size) {
     map_to_be_saved.width  = map_to_be_saved.points.size();
     map_to_be_saved.height = 1;
 
-    std::cout << "\033[1;32mTARGET: " << save_path_  + data_name_ + "_erasor_result.pcd" << "\033[0m" << std::endl;
+    std::cout << "\033[1;32mTARGET: " << save_path_  + data_name_ + "_erasor.pcd" << "\033[0m" << std::endl;
     std::cout << "Voxelization operated with " << voxel_size << " voxel size" << std::endl;
     pcl::io::savePCDFileASCII(save_path_ + data_name_ + "_result.pcd", map_to_be_saved);
     std::cout << "\033[1;32mComplete to save the final static map\033[0m" << std::endl;

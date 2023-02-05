@@ -297,7 +297,6 @@ class mapgen {
     // assert (cloud.size()!=0);
     // std::cout << cloud.size() << std::endl;
     // std::cout << world_transformed->size() << std::endl;
-
     erasor_utils::voxelize_preserving_labels(world_transformed, cloud_curr,
                                              0.2);
     // std::cout << cloud_curr.size() << std::endl;

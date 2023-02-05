@@ -1,27 +1,24 @@
 <launch>
 
-<node name="slam_mapgen" pkg="erasor" type="slam_mapgen" output="screen">
+<node name="debug_gt_mapgen" pkg="erasor" type="debug_gt_mapgen" output="screen">
     <rosparam param="/map/voxelsize">0.2</rosparam>		
     <rosparam param="/map/target_rosbag">"05_2350_to_2670_w_interval_2_node.bag"</rosparam>
-
+    
     <!-- ！！！！save_path 看一下 -->
-    <rosparam param="/map/slam_map_save_path">"/mnt/d/dataset/dynamic_self/test"</rosparam>  
-
+    <rosparam param="/map/save_path">"/mnt/d/dataset/dynamic_self/test"</rosparam>  
+    
     <!-- 数据集名字 -->
-    <rosparam param="/map/dataset_name">"machi_slam_full"</rosparam>
+    <rosparam param="/map/dataset_name">"machi_gt_full"</rosparam>
 
-
+    <!-- 全点云位置 -->
     <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside/velodyne_intensity_gt"</rosparam>
-
+    
     <!-- SLAM给出的位姿 -->
     <rosparam param="/map/poses_url">"/mnt/d/dataset/dynamic_self/test/machi/0203_at18_27_15/poses/poses_withtime.txt"</rosparam>
-
+    
     <!-- id-timestamp 对应文件-->
     <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"</rosparam>
-
-    <!-- 这里写SLAM给出的动态索引文件夹  -->
-    <rosparam param="/map/slam_dynamic_indices_dir">"/mnt/d/dataset/dynamic_self/test/machi/0204_at17_10_38/frontend/dynamic_indices"</rosparam>
-
+    
     <!-- 时间范围限制  -->
     <rosparam param="/map/start_timestamp">1672817424.1</rosparam>
     <rosparam param="/map/end_timestamp">1672817687</rosparam>
