@@ -102,6 +102,8 @@ namespace erasor_utils {
 
     void voxelize_preserving_labels(pcl::PointCloud<pcl::PointXYZI>::Ptr src, pcl::PointCloud<pcl::PointXYZI> &dst, double leaf_size);
 
+    void find_nearest_labels(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_withlabel,
+                             pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_nolabel);
     void count_stat_dyn(const pcl::PointCloud<pcl::PointXYZI> &cloudIn, int &num_static, int &num_dynamic);
 
     void signal_callback_handler(int signum);

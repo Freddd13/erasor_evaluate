@@ -116,6 +116,30 @@ namespace erasor_utils {
         dst = *ptr_reassigned;
     }
 
+    void find_nearest_labels(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_withlabel,
+                             pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_nolabel) {
+      pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_tmp(new pcl::PointCloud<pcl::PointXYZI>);
+
+      // 2. Find nearest point to update intensity (index and id)
+      pcl::KdTreeFLANN<pcl::PointXYZI> kdtree;
+      kdtree.setInputCloud(cloud_withlabel);
+
+      int K = 1;
+
+      std::vector<int> pointIdxNKNSearch(K);
+      std::vector<float> pointNKNSquaredDistance(K);
+
+      // Set dst <- output
+      for (const auto &pt : cloud_nolabel->points) {
+        if (kdtree.nearestKSearch(pt, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0) {
+          auto updated = pt;
+          updated.intensity = (*cloud_withlabel)[pointIdxNKNSearch[0]].intensity;
+          cloud_tmp->points.emplace_back(updated);
+        }
+      }
+      *cloud_nolabel = *cloud_tmp;
+    }
+
     void count_stat_dyn(const pcl::PointCloud<pcl::PointXYZI> &cloudIn, int &num_static, int &num_dynamic) {
         int             tmp_static  = 0;
         int             tmp_dynamic = 0;
