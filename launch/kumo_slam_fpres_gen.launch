@@ -8,16 +8,15 @@
     <rosparam param="/map/slam_map_save_path">"/mnt/d/dataset/dynamic_self/test"</rosparam>  
 
     <!-- 数据集名字 -->
-    <rosparam param="/map/dataset_name">"machi_feature_filtered"</rosparam>
+    <rosparam param="/map/dataset_name">"machi_feature_filtered_bakonly"</rosparam>
 
 
     <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside/velodyne_intensity_gt"</rosparam>
 
     <!-- SLAM给出的位姿 -->
-    <rosparam param="/map/poses_url">"/mnt/d/dataset/dynamic_self/test/machi/0212_at12_56_24/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/gt_pose_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside/slam_kitti_withtime.txt"</rosparam>
+    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/0212_at14_24_58/poses/poses_withtime.txt"</rosparam>
 
-    <!-- id-timestamp 对应文件-->
-    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"</rosparam>
 
     <!-- 时间范围限制  -->
     <rosparam param="/map/start_timestamp">1672817424.1</rosparam>
@@ -27,10 +26,11 @@
     <!-- slam记录的原始特征点索引路径 -->
     <rosparam param="/map/corner_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_original/original/corner/indices"</rosparam>
     <rosparam param="/map/surf_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_original/original/surf/indices"</rosparam>
+    <rosparam param="/map/ground_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_original/original/ground/indices"</rosparam>
 
     <!-- slam记录的结果点云结果路径 -->
-    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/0212_at12_56_24/original_ds/corner/cloud"</rosparam>
-    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/0212_at12_56_24/original_ds/surf/cloud"</rosparam>
+    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/0212_at14_24_58/result/corner/cloud"</rosparam>
+    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/0212_at14_24_58/result/surf/cloud"</rosparam>
 
     <!-- 特征保留的voxel大小 -->
     <rosparam param="/map/corner_leafsize">0.2</rosparam>
@@ -38,12 +38,15 @@
 
     <!-- 是否保存原始特征积累的结果作为真值/结果 -->
     <rosparam param="/map/also_save_ori_fpcloud">false</rosparam>
+    <rosparam param="/map/ignore_ground_fn">true</rosparam>
 
+    
+    <!-- id-timestamp 对应文件-->
+    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"</rosparam>
     
     <rosparam param="/map/viz_interval">1</rosparam>
     <rosparam param="/large_scale/is_large_scale">true</rosparam>
 </node>
 
-<node name="rviz" pkg="rviz" type="rviz" args="-d $(find erasor)/rviz/kitti_mapgen.rviz"/>
 
 </launch>

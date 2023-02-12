@@ -28,7 +28,7 @@ std::string init_stamp = "";
 std::string final_stamp = "";
 std::string slam_map_save_path;
 std::string dataset_name;
-std::string pose_url;
+std::string gt_pose_url, kf_pose_url;
 std::string cloud_bin_dir;
 
 int interval;
@@ -41,8 +41,8 @@ const double scanPeriod = 0.1;
 
 
 void KumoSaveFeatureCloud(CloudXYZI::Ptr cloud_full, float leafsize, std::string name) {
-  std::string map_dir = slam_map_save_path + dataset_name + "_" + name + "_" + init_stamp + "_to_" + final_stamp + "_voxel_" + std::to_string(leafsize) +
-                        ".pcd";
+  std::string map_dir = slam_map_save_path + dataset_name + "_" + name + "_" + init_stamp + "_to_" + final_stamp +
+                        "_voxel_" + std::to_string(leafsize) + ".pcd";
   std::cout << "save_dir: " << map_dir << std::endl;
 
   CloudXYZI::Ptr cloud_to_save(new CloudXYZI());
@@ -86,23 +86,28 @@ int main(int argc, char **argv) {
   float start_timestamp, end_timestamp;
   int start_id, end_id;
   std::string corr_url;
-  std::string corner_idx_dir, surf_idx_dir, corner_cloud_dir, surf_cloud_dir, res_corner_cloud_dir, res_surf_cloud_dir;
+  std::string corner_idx_dir, surf_idx_dir, ground_idx_dir, corner_cloud_dir, surf_cloud_dir, res_corner_cloud_dir,
+      res_surf_cloud_dir;
   bool also_save_ori_fpcloud;
+  bool ignore_ground_fn;
   float corner_leafsize, surf_leafsize;
 
   nodeHandler.param("/map/voxelsize", voxelsize, (float)0.05);
   nodeHandler.param<std::string>("/map/slam_map_save_path", slam_map_save_path, "/mnt/d");
   nodeHandler.param<std::string>("/map/dataset_name", dataset_name, "machi");
   nodeHandler.param<std::string>("/map/cloud_bin_dir", cloud_bin_dir, "machi");
-  nodeHandler.param<std::string>("/map/poses_url", pose_url, "machi");
+  nodeHandler.param<std::string>("/map/gt_pose_url", gt_pose_url, "machi");
+  nodeHandler.param<std::string>("/map/kf_pose_url", kf_pose_url, "machi");
   nodeHandler.param<std::string>("/map/corr_url", corr_url, "machi");
   nodeHandler.param<std::string>("/map/corner_idx_dir", corner_idx_dir, "machi");
   nodeHandler.param<std::string>("/map/surf_idx_dir", surf_idx_dir, "machi");
+  nodeHandler.param<std::string>("/map/ground_idx_dir", ground_idx_dir, "machi");
   nodeHandler.param<std::string>("/map/res_corner_cloud_dir", res_corner_cloud_dir, "machi");
   nodeHandler.param<std::string>("/map/res_surf_cloud_dir", res_surf_cloud_dir, "machi");
   nodeHandler.param<float>("/map/corner_leafsize", corner_leafsize, 0.2);
   nodeHandler.param<float>("/map/surf_leafsize", surf_leafsize, 0.4);
   nodeHandler.param<bool>("/map/also_save_ori_fpcloud", also_save_ori_fpcloud, false);
+  nodeHandler.param<bool>("/map/ignore_ground_fn", ignore_ground_fn, false);
 
   nodeHandler.param<float>("/map/start_timestamp", start_timestamp, 999999999.9);
   nodeHandler.param<float>("/map/end_timestamp", end_timestamp, 999999999.9);
@@ -119,6 +124,7 @@ int main(int argc, char **argv) {
 
   corner_idx_dir = (corner_idx_dir.back() == '/') ? corner_idx_dir : (corner_idx_dir + "/");
   surf_idx_dir = (surf_idx_dir.back() == '/') ? surf_idx_dir : (surf_idx_dir + "/");
+  ground_idx_dir = (ground_idx_dir.back() == '/') ? ground_idx_dir : (ground_idx_dir + "/");
   res_corner_cloud_dir = (res_corner_cloud_dir.back() == '/') ? res_corner_cloud_dir : (res_corner_cloud_dir + "/");
   res_surf_cloud_dir = (res_surf_cloud_dir.back() == '/') ? res_surf_cloud_dir : (res_surf_cloud_dir + "/");
 
@@ -126,7 +132,7 @@ int main(int argc, char **argv) {
   // 对每个bin, 配对位姿 （去掉最前面几帧！）
   // pose_with_timestamp
   std::ifstream f_read_pose, f_read_corr;
-  f_read_pose.open(pose_url, std::fstream::in);
+  f_read_pose.open(gt_pose_url, std::fstream::in);
   f_read_corr.open(corr_url, std::fstream::in);
 
   // 将corr 读进一个map
@@ -138,7 +144,7 @@ int main(int argc, char **argv) {
   f_read_corr.close();
 
   // debug
-  std::cout << pose_url << std::endl;
+  std::cout << gt_pose_url << std::endl;
   std::cout << corr_url << std::endl;
   std::cout << "read map success" << std::endl;
 
@@ -152,7 +158,29 @@ int main(int argc, char **argv) {
   CloudXYZI::Ptr res_surf_full(new CloudXYZI());
 
 
-  ////////////// 读pose ////////////////////////
+  ///////// 读关键帧timestamp ///////////
+  std::cout << "=========================================================" << std::endl;
+  std::ifstream f_keyframe_pose;
+  f_keyframe_pose.open(kf_pose_url, std::fstream::in);
+  std::map<std::string, bool> keyframe_timestamps;
+  std::cout << kf_pose_url << std::endl;
+  if (f_read_pose.is_open()) {
+    char line[1024];
+    while (f_keyframe_pose.getline(line, sizeof(line), '\n')) {
+      char *p;
+      p = strtok(line, " ");
+      std::string timestamp;  //时间
+      while (p != NULL) {
+        timestamp = p;
+        break;
+      }
+      keyframe_timestamps[timestamp] = true;
+      // std::cout << timestamp << std::endl;
+    }
+  }
+
+
+  ////////////// 读GTpose，这样保证去除前后差不多 ////////////////////////
   static int num_matched = 0;
   if (f_read_pose.is_open()) {
     printf("begin load pose... \n");
@@ -175,7 +203,11 @@ int main(int argc, char **argv) {
         }
         p = strtok(NULL, " ");
       }
-
+      
+      // 如果不是SLAM关键帧则跳过
+      if (!keyframe_timestamps.count(timestamp)) {
+        continue;
+      }
 
       ///// 读完了时间+pose,看时间是否满足要求
       if (atof(timestamp.c_str()) < start_timestamp || atof(timestamp.c_str()) > end_timestamp) {
@@ -227,6 +259,7 @@ int main(int argc, char **argv) {
         std::string url_corner_rescloud_this = res_corner_cloud_dir + timestamp + ".pcd.bin";
         std::string url_surf_idx_this = surf_idx_dir + timestamp + ".txt";
         std::string url_surf_rescloud_this = res_surf_cloud_dir + timestamp + ".pcd.bin";
+        std::string url_ground_idx_this = ground_idx_dir + timestamp + ".txt";
 
         if (!fs::exists(url_corner_idx_this)) {
           std::cout << url_corner_idx_this << " not exists" << std::endl;
@@ -244,6 +277,11 @@ int main(int argc, char **argv) {
           std::cout << url_surf_rescloud_this << " not exists" << std::endl;
           continue;
         }
+        if (!fs::exists(url_ground_idx_this)) {
+          std::cout << url_ground_idx_this << " not exists" << std::endl;
+          continue;
+        }
+        num_matched++;
         std::cout << timestamp << " matched" << std::endl;
 
 
@@ -267,6 +305,24 @@ int main(int argc, char **argv) {
         }
         f_surf_idx_thid.close();
 
+        // 地SLAM索引
+        std::ifstream f_ground_idx_this;
+        f_ground_idx_this.open(url_ground_idx_this, std::fstream::in);
+        std::vector<int> ground_indices;
+        while (f_ground_idx_this >> index) {
+          ground_indices.push_back(index);
+        }
+        f_ground_idx_this.close();
+
+
+        // 忽略地面以避免不准确的标注
+        if (ignore_ground_fn) {
+          for (const auto &idx : ground_indices) {
+            if (cloud.points[idx].intensity == 254) {
+              cloud.points[idx].intensity = 0;
+            }
+          }
+        }
 
         // 形成角面点云
         CloudXYZI::Ptr oricloud_corner_this(new CloudXYZI());
