@@ -67,7 +67,7 @@ void KumoAccumulateFeatureCloud(pcl::PointCloud<pcl::PointXYZI> &cloud_this,
                                 pcl::PointCloud<pcl::PointXYZI> &cloud_full, Eigen::Matrix4f pose) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr world_transformed(new pcl::PointCloud<pcl::PointXYZI>);
   pcl::transformPointCloud(cloud_this, *world_transformed, pose);
-  cloud_full += cloud_this;
+  cloud_full += *world_transformed;
 }
 
 /*
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 
   float start_timestamp, end_timestamp;
   int start_id, end_id;
-  std::string corr_url, index_mapping_dir, slam_dynamic_indices_dir;
+  std::string corr_url;
   std::string corner_idx_dir, surf_idx_dir, corner_cloud_dir, surf_cloud_dir, res_corner_cloud_dir, res_surf_cloud_dir;
   bool also_save_ori_fpcloud;
   float corner_leafsize, surf_leafsize;
@@ -154,6 +154,7 @@ int main(int argc, char **argv) {
 
 
   ////////////// 读pose ////////////////////////
+  static int num_matched = 0;
   if (f_read_pose.is_open()) {
     printf("begin load pose... \n");
     char line[1024];
@@ -181,14 +182,6 @@ int main(int argc, char **argv) {
       if (atof(timestamp.c_str()) < start_timestamp || atof(timestamp.c_str()) > end_timestamp) {
         continue;
       }
-
-      ///// 必须slam有这点云
-      std::string url_slam_dynamic_indices = slam_dynamic_indices_dir + timestamp + ".txt";
-      if (!fs::exists(url_slam_dynamic_indices)) {
-        std::cout << "skip " << timestamp << " for lack of slam data" << std::endl;
-        continue;
-      }
-
 
       // 读corr
       if (corr_data.count(timestamp)) {
@@ -231,9 +224,9 @@ int main(int argc, char **argv) {
 
 
         // 检查角面点idx、 相应的结果cloud存在
-        std::string url_corner_idx_this = corner_idx_dir + timestamp + ".indices";
+        std::string url_corner_idx_this = corner_idx_dir + timestamp + ".txt";
         std::string url_corner_rescloud_this = res_corner_cloud_dir + timestamp + ".pcd.bin";
-        std::string url_surf_idx_this = surf_idx_dir + timestamp + ".indices";
+        std::string url_surf_idx_this = surf_idx_dir + timestamp + ".txt";
         std::string url_surf_rescloud_this = res_surf_cloud_dir + timestamp + ".pcd.bin";
 
         if (!fs::exists(url_corner_idx_this)) {
@@ -252,6 +245,7 @@ int main(int argc, char **argv) {
           std::cout << url_surf_rescloud_this << " not exists" << std::endl;
           continue;
         }
+        std::cout << timestamp << " matched" << std::endl;
 
 
         // 读入index
@@ -326,6 +320,8 @@ int main(int argc, char **argv) {
         continue;
       }
     }
+    std::cout << "total matched " << num_matched << " frames" << std::endl;
+
     if (also_save_ori_fpcloud) {
       KumoSaveFeatureCloud(ori_corner_full, corner_leafsize, "ori_corner");
       KumoSaveFeatureCloud(ori_surf_full, surf_leafsize, "ori_surf");
