@@ -41,9 +41,8 @@ const double scanPeriod = 0.1;
 
 
 void KumoSaveFeatureCloud(CloudXYZI::Ptr cloud_full, float leafsize, std::string name) {
-  std::string map_dir = slam_map_save_path + dataset_name + "_" + name + "_" + init_stamp + "_to_" + final_stamp +
-                        "_w_interval" + std::to_string(interval) + "_voxel_" + std::to_string(voxelsize) +
-                        "_original.pcd";
+  std::string map_dir = slam_map_save_path + dataset_name + "_" + name + "_" + init_stamp + "_to_" + final_stamp + "_voxel_" + std::to_string(leafsize) +
+                        ".pcd";
   std::cout << "save_dir: " << map_dir << std::endl;
 
   CloudXYZI::Ptr cloud_to_save(new CloudXYZI());
