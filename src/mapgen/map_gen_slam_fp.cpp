@@ -72,9 +72,9 @@ void KumoAccumulateFeatureCloud(pcl::PointCloud<pcl::PointXYZI> &cloud_this,
 /*
 思路：
 读SLAM给出的判断的每帧动态点索引文件，读相应的位姿和其全点云。 这里直接从带intensity的bin中读
-由于这里使用了SLAM一样的点云前处理，就不需要index mapping，它处理后可以直接使用动态索引.
-将slam认为的非动态点云保存下来作为保留地图，由于其intensity来自GT bin，起到了自带标签的效果，可以直接生成结果地图
-这和ERASOR给出的点云应该是一致的，可以用来评估pr rr
+由于这里使用了SLAM一样的点云前处理. 可以直接使用SLAM保存的角、面、地索引。
+这里的点直接带了GT label。将SLAM结果点云（经过某种采样）向前者找标签，并拼接相应特征点云
+最后再进行一次下采样（最终比较的下采样大小）
 */
 
 
