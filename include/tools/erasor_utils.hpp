@@ -51,10 +51,12 @@ namespace erasor_utils {
     template<typename T>
     sensor_msgs::PointCloud2 cloud2msg(pcl::PointCloud<T> cloud, std::string frame_id = "map")
     {
-        sensor_msgs::PointCloud2 cloud_ROS;
-        pcl::toROSMsg(cloud, cloud_ROS);
-        cloud_ROS.header.frame_id = frame_id;
-        return cloud_ROS;
+      cloud.width = cloud.points.size();
+      cloud.height = 1;
+      sensor_msgs::PointCloud2 cloud_ROS;
+      pcl::toROSMsg(cloud, cloud_ROS);
+      cloud_ROS.header.frame_id = frame_id;
+      return cloud_ROS;
     }
 
     template<typename T>

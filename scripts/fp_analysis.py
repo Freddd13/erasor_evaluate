@@ -204,10 +204,10 @@ if __name__ == "__main__":
     import os
 
     parser = argparse.ArgumentParser(description='Analysis of static map')
-    parser.add_argument('--cgt', default='/mnt/d/dataset/dynamic_self/test/machi_feature_filtered_res_corner__to__w_interval0_voxel_0.200000_original.pcd', type=str)
-    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/machi_feature_gt_res_corner__to__w_interval0_voxel_0.200000_original.pcd', type=str)
-    parser.add_argument('--sgt', default='/mnt/d/dataset/dynamic_self/test/machi_feature_filtered_res_surf__to__w_interval0_voxel_0.200000_original.pcd', type=str)
-    parser.add_argument('--sest', default='/mnt/d/dataset/dynamic_self/test/machi_feature_gt_res_surf__to__w_interval0_voxel_0.200000_original.pcd', type=str)
+    parser.add_argument('--cgt', default='/mnt/d/dataset/dynamic_self/test/park_feature_slam_res_wo_distort_ori_res_corner__to__voxel_0.200000.pcd', type=str)
+    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/paaa_res_corner__to__voxel_0.200000.pcd', type=str)
+    parser.add_argument('--sgt', default='/mnt/d/dataset/dynamic_self/test/park_feature_slam_res_wo_distort_ori_res_surf__to__voxel_0.400000.pcd', type=str)
+    parser.add_argument('--sest', default='/mnt/d/dataset/dynamic_self/test/paaa_res_surf__to__voxel_0.400000.pcd', type=str)
     args = parser.parse_args()
 
     ########################### corner ################################

@@ -11,20 +11,20 @@
     <rosparam param="/map/dataset_name">"machi_slam_full"</rosparam>
 
 
-    <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside/velodyne_intensity_gt"</rosparam>
+    <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/nantapark_paper/velodyne_intensity_gt"</rosparam>
 
     <!-- SLAM给出的位姿 -->
-    <rosparam param="/map/poses_url">"/mnt/d/dataset/dynamic_self/test/machi/0203_at18_27_15/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/poses_url">"/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_full_filter/poses/poses_withtime.txt"</rosparam>
 
     <!-- id-timestamp 对应文件-->
-    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"</rosparam>
+    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/nantapark_paper/timestamps.txt"</rosparam>
 
     <!-- 这里写SLAM给出的动态索引文件夹  -->
-    <rosparam param="/map/slam_dynamic_indices_dir">"/mnt/d/dataset/dynamic_self/test/machi/0204_at17_10_38/frontend/dynamic_indices"</rosparam>
+    <rosparam param="/map/slam_dynamic_indices_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_full_filter/frontend/dynamic_indices"</rosparam>
 
     <!-- 时间范围限制  -->
-    <rosparam param="/map/start_timestamp">1672817424.1</rosparam>
-    <rosparam param="/map/end_timestamp">1672817687</rosparam>
+    <rosparam param="/map/start_timestamp">0</rosparam>
+    <rosparam param="/map/end_timestamp">1999999999</rosparam>
     
     <rosparam param="/map/viz_interval">1</rosparam>
     <rosparam param="/large_scale/is_large_scale">true</rosparam>

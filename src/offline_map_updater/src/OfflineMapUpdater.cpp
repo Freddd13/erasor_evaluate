@@ -239,6 +239,7 @@ void OfflineMapUpdater::callback_node(const erasor::node::ConstPtr &msg) {
         pcl::fromROSMsg(msg->lidar, *ptr_query);
         erasor_utils::voxelize_preserving_labels(ptr_query, *ptr_query_voxel, query_voxel_size_);
 
+        auto sssss = ros::Time::now().toSec();
         pcl::transformPointCloud(*ptr_query_voxel, *ptr_query_body, tf_lidar2body_);
         *query_voi_ = *ptr_query_body;
         body2origin(*ptr_query_body, *ptr_query_viz);
@@ -294,6 +295,10 @@ void OfflineMapUpdater::callback_node(const erasor::node::ConstPtr &msg) {
         auto end = ros::Time::now().toSec();
 
         erasor_utils::parse_dynamic_obj(*map_arranged_, *dynamic_objs_to_viz_, *static_objs_to_viz_);
+
+
+        auto eeee = ros::Time::now().toSec();
+        ROS_ERROR("real time:%f", end - sssss);
 
         /*** Just for debugging */
         *total_map_rejected_ += *map_rejected_;

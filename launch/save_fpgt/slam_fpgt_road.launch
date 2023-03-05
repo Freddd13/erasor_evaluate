@@ -1,0 +1,66 @@
+<launch>
+
+<node name="slam_fp_mapgen" pkg="erasor" type="slam_fp_mapgen" output="screen">
+    <rosparam param="/map/voxelsize">0.2</rosparam>		
+    <rosparam param="/map/target_rosbag">"05_2350_to_2670_w_interval_2_node.bag"</rosparam>
+
+
+
+    <!-- ！！！！save_path 看一下 -->
+    <rosparam param="/map/slam_map_save_path">"/mnt/d/dataset/dynamic_self/test"</rosparam>  
+
+
+
+
+    <!-- =====================================================数据集相关=================================================================== -->
+    <!-- 数据集名字 *****改名字*****-->
+    <rosparam param="/map/dataset_name">"road_FPGT"</rosparam>
+    <!-- 时间范围限制  *****改时间*****-->
+    <rosparam param="/map/start_timestamp">1672815876</rosparam>
+    <rosparam param="/map/end_timestamp">1672816315</rosparam>
+
+
+
+    <!-- ======================================================改真值路径================================================================== -->
+    <rosparam param="/map/cloud_bin_dir">"/mnt/d/dataset/dynamic_self/road/velodyne_intensity_gt"</rosparam>
+    <!-- SLAM给出的位姿 -->
+    <rosparam param="/map/gt_pose_url">"/mnt/d/dataset/dynamic_self/road/slam_kitti_withtime.txt"</rosparam>
+    <!-- id-timestamp 对应文件-->
+    <rosparam param="/map/corr_url">"/mnt/d/dataset/dynamic_self/road/timestamps.txt"</rosparam>
+
+
+
+
+    <!-- ======================================================改原始特征路径================================================================== -->
+    <!-- slam记录的原始特征点索引路径  *****改路径*****--> 
+    <rosparam param="/map/corner_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/road_ori_feature_original/original/corner/indices"</rosparam>
+    <rosparam param="/map/surf_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/road_ori_feature_original/original/surf/indices"</rosparam>
+    <rosparam param="/map/ground_idx_dir">"/mnt/d/dataset/dynamic_self/test/machi/road_ori_feature_original/original/ground/indices"</rosparam>
+
+
+
+
+    <!-- =====================================================改结果路径=============================================================== -->>
+    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/road_FPGT_w_o_distort/poses/poses_withtime.txt"</rosparam>
+    <!-- slam记录的结果点云结果路径 *****改路径*****-->
+    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/road_FPGT_w_o_distort/result/corner/cloud"</rosparam>
+    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/road_FPGT_w_o_distort/result/surf/cloud"</rosparam>
+
+
+
+
+    <!-- 特征保留的voxel大小 -->
+    <rosparam param="/map/corner_leafsize">0.2</rosparam>
+    <rosparam param="/map/surf_leafsize">0.4</rosparam>
+
+    <!-- 是否保存原始特征积累的结果作为真值/结果 -->
+    <rosparam param="/map/also_save_ori_fpcloud">false</rosparam>
+    <rosparam param="/map/ignore_ground_fn">true</rosparam>
+
+    
+    <rosparam param="/map/viz_interval">1</rosparam>
+    <rosparam param="/large_scale/is_large_scale">true</rosparam>
+</node>
+
+
+</launch>

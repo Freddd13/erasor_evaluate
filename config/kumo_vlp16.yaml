@@ -17,7 +17,7 @@ erasor:
 
 MapUpdater:
     data_name: "machi"
-    initial_map_path: "/mnt/d/dataset/dynamic_self/test/machi_gt_full_voxel_0.200000.pcd"
+    initial_map_path: "/mnt/d/dataset/dynamic_self/test/nantapark_paper_voxel_0.200000.pcd"
     env: "outdoor"
     save_path: "/mnt/d/dataset/dynamic_self/test/"
     query_voxel_size: 0.075
@@ -35,8 +35,8 @@ tf:
 verbose: true
 
 kumo:
-  start_timestamp: 1672817424.1
-  end_timestamp: 1672817687
-  pose_url: "/mnt/d/dataset/dynamic_self/test/machi/0203_at18_27_15/poses/poses_withtime.txt"
-  corr_url: "/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/timestamp.txt"
-  cloud_bin_dir: "/mnt/d/dataset/dynamic_self/Jan_success_out_machi_inside_to_outside_test/velodyne"
+  start_timestamp: 1669288651.5
+  end_timestamp: 1669288909
+  pose_url: "/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_full_filter/poses/poses_withtime.txt"
+  corr_url: "/mnt/d/dataset/dynamic_self/nantapark_paper/timestamps.txt"
+  cloud_bin_dir: "/mnt/d/dataset/dynamic_self/nantapark_paper/velodyne_intensity_gt"

@@ -1,7 +1,7 @@
 /*** 
  * @Date: 2023-02-04 18:52:20
  * @LastEditors: yxt
- * @LastEditTime: 2023-02-11 23:54:03
+ * @LastEditTime: 2023-03-05 19:35:49
  * @Description: 
  */
 #include <experimental/filesystem>  // requires gcc version >= 8
@@ -70,6 +70,7 @@ int main(int argc, char **argv) {
   int start_id, end_id;
   std::string corr_url, index_mapping_dir, slam_dynamic_indices_dir;
 
+  std::string fucking_idx_mapping = "/mnt/d/dataset/dynamic_self/nantapark_paper/index_mappings/";
   nodeHandler.param("/map/voxelsize", voxelsize, (float)0.05);
   nodeHandler.param<std::string>("/map/slam_map_save_path", slam_map_save_path, "/mnt/d");
   nodeHandler.param<std::string>("/map/dataset_name", dataset_name, "machi");
@@ -91,7 +92,8 @@ int main(int argc, char **argv) {
   cloud_bin_dir = (cloud_bin_dir.back() == '/') ? cloud_bin_dir : (cloud_bin_dir + "/");
   slam_dynamic_indices_dir =
       (slam_dynamic_indices_dir.back() == '/') ? slam_dynamic_indices_dir : (slam_dynamic_indices_dir + "/");
-
+  std::cout << slam_dynamic_indices_dir << std::endl;
+  // return -1;
 
   // 生成地图!!!! tatakai!!!!!!!!
   // 对每个bin, 配对位姿 （去掉最前面几帧！）
@@ -115,7 +117,9 @@ int main(int argc, char **argv) {
 
   std::cout << "read map success" << std::endl;
 
+  int pose_num = 0, num_dy_gt_full = 0;
   ////////////// 读pose ////////////////////////
+  uint32_t num_full_dy = 0, num_full_points = 0;
   if (f_read_pose.is_open()) {
     printf("begin load pose... \n");
     char line[1024];
@@ -153,6 +157,7 @@ int main(int argc, char **argv) {
       
       // 读corr
       if (corr_data.count(timestamp)) {
+        pose_num++;
         std::ostringstream tmp;
         tmp << std::setw(6) << std::setfill('0') << corr_data[timestamp];
         std::string cloud_file_name = cloud_bin_dir + tmp.str() + ".bin";
@@ -199,22 +204,32 @@ int main(int argc, char **argv) {
         int num_dynamic = 0;
         int last_dynamic_index = 0;
         while (f_slam_dynamic_indices >> element) {
-          // std::cout << element << "is dynamic!!!" << std::endl;
+          // std::cout << element << " " ;
           // data_slam_dynamic_indices.push_back(element);
           is_dynamic_vec[element] = true;
           num_dynamic++;
+          // num_full_dy++;
         }
-
+        // num_full_points+=;
         CloudXYZI cloud_perserved_slam;
         // create new cloud_perserved_slam
         for (int i = 0; i < cloud.size();i++) {
+          if (cloud.points[i].intensity == 254) {
+            num_dy_gt_full ++;
+          }
+
           if (!is_dynamic_vec[i]) {
+            if (cloud.points[i].intensity==254) {
+              num_full_dy++;
+            }
             cloud_perserved_slam.push_back(cloud.points[i]);
           }
         }
 
-
+        // num_full_dy+= num_dynamic;
+        // std::cout << url_slam_dynamic_indices << std::endl;
         // std::cout << " num_dynamic " << num_dynamic << std::endl;
+        // return -1;
         // // std::cout <<" cloud_nums, original " <<  cloud_raw.size() << "slam: " << cloud.size() << ", preserved: " << cloud_perserved_slam.size() << std::endl;
         // break;
 
@@ -243,6 +258,8 @@ int main(int argc, char **argv) {
     saveGlobalMap();
   }
   f_read_pose.close();
+  std::cout << "ratio" << 1.0*num_full_dy / num_dy_gt_full << std::endl;
+  std::cout << "--- " << pose_num << std::endl;
 
   return 0;
 }

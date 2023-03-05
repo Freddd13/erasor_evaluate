@@ -203,9 +203,9 @@ if __name__ == "__main__":
     import os
 
     parser = argparse.ArgumentParser(description='Analysis of static map')
-    parser.add_argument('--gt', default='/mnt/d/dataset/dynamic_self/test/machi_gt_full_voxel_0.200000.pcd', type=str)
+    parser.add_argument('--gt', default='/mnt/d/dataset/dynamic_self/test/nantapark_paper_voxel_0.200000.pcd', type=str)
     # parser.add_argument('--est', default='/mnt/d/dataset/dynamic_self/test/machi_result.pcd', type=str)
-    parser.add_argument('--est', default='/mnt/d/dataset/dynamic_self/test/machi_slam_full_voxel_0.200000.pcd', type=str)
+    parser.add_argument('--est', default='/mnt/d/dataset/dynamic_self/test/machi_result.pcd', type=str)
     args = parser.parse_args()
     print("GT Path: " + args.gt)
     print("Estimate Path: " + args.est)
