@@ -110,3 +110,9 @@ add_executable(slam_fp_mapgen src/mapgen/map_gen_slam_fp.cpp src/mapgen/mapgen.h
 target_link_libraries(slam_fp_mapgen stdc++fs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(slam_fp_mapgen erasor_generate_messages_cpp)
 
+
+# removert
+add_executable(rmvt src/mapgen/save_gt_for_removert.cpp src/mapgen/mapgen.hpp src/offline_map_updater/src/erasor_utils.cpp)
+target_link_libraries(rmvt stdc++fs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(rmvt erasor_generate_messages_cpp)
+

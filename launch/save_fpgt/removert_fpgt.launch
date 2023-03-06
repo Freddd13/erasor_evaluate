@@ -1,6 +1,6 @@
 <launch>
 
-<node name="slam_fp_mapgen" pkg="erasor" type="slam_fp_mapgen" output="screen">
+<node name="rmvt" pkg="erasor" type="rmvt" output="screen">
     <rosparam param="/map/voxelsize">0.2</rosparam>		
     <rosparam param="/map/target_rosbag">"05_2350_to_2670_w_interval_2_node.bag"</rosparam>
 
@@ -13,7 +13,7 @@
 
     <!-- ==================================================数据集相关============================================================ -->
     <!-- 数据集名字 -->
-    <rosparam param="/map/dataset_name">"machi_no_distort_featurori_config1_full_filter"</rosparam>
+    <rosparam param="/map/dataset_name">"machi_FPGT"</rosparam>
     <!-- 时间范围限制  *****改时间*****-->
     <rosparam param="/map/start_timestamp">1672817424.1</rosparam>
     <rosparam param="/map/end_timestamp">1672817687</rosparam>
@@ -39,10 +39,17 @@
 
 
     <!-- ======================================================改结果路径================================================================= -->
-    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/machi_res_wo_fill/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/machi_FPGT_w_o_distort/poses/poses_withtime.txt"</rosparam>
     <!-- slam记录的结果点云结果路径 *****改路径*****-->
-    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_res_wo_fill/result/corner/cloud"</rosparam>
-    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_res_wo_fill/result/surf/cloud"</rosparam>
+    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_FPGT_w_o_distort/result/corner/cloud"</rosparam>
+    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/machi_FPGT_w_o_distort/result/surf/cloud"</rosparam>
+
+
+
+    <!-- removert -->
+    <rosparam param="/map/output_corner_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/corner/cloud"</rosparam>
+    <rosparam param="/map/output_surf_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/surf/cloud"</rosparam>
+    <rosparam param="/map/output_pose_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/"</rosparam>
 
 
 

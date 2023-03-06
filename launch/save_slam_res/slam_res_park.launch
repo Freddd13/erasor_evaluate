@@ -42,10 +42,10 @@
 
 
     <!-- =====================================================改结果路径=============================================================== -->>
-    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/park_res_backonly/poses/poses_withtime.txt"</rosparam>
     <!-- slam记录的结果点云结果路径 *****改路径*****-->
-    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/result/corner/cloud"</rosparam>
-    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/result/surf/cloud"</rosparam>
+    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_backonly/result/corner/cloud"</rosparam>
+    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_backonly/result/surf/cloud"</rosparam>
 
 
 

@@ -205,7 +205,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Analysis of static map')
     parser.add_argument('--cgt', default='/mnt/d/dataset/dynamic_self/test/machi_FPGT_res_corner__to__voxel_0.200000.pcd', type=str)
-    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/machi_no_distort_featurori_config1_full_filter_res_corner__to__voxel_0.200000', type=str)
+    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/machi_no_distort_featurori_config1_full_filter_res_corner__to__voxel_0.200000.pcd', type=str)
 
     parser.add_argument('--sgt', default='/mnt/d/dataset/dynamic_self/test/machi_FPGT_res_surf__to__voxel_0.400000.pcd', type=str)
     parser.add_argument('--sest', default='/mnt/d/dataset/dynamic_self/test/machi_no_distort_featurori_config1_full_filter_res_surf__to__voxel_0.400000.pcd', type=str)
