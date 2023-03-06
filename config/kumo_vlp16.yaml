@@ -1,5 +1,5 @@
 erasor: 
-    max_range: 9.5
+    max_range: 80.0
     num_rings: 8
     num_sectors: 60
     min_h: -1.6 # [m] Note that it depends on the distance between body frame and ground contact point of mobile robots
@@ -12,7 +12,7 @@ erasor:
     gf_iter: 3
     gf_num_lpr: 12
     gf_th_seeds_height: 0.5
-    version: 3 # 2: R-GPF / 3: R-GPF w/ blocking (not in paper)
+    version: 2 # 2: R-GPF / 3: R-GPF w/ blocking (not in paper)
 
 
 MapUpdater:

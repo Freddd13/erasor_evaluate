@@ -14,7 +14,7 @@
 
     <!-- =====================================================数据集相关=================================================================== -->
     <!-- 数据集名字 *****改名字*****-->
-    <rosparam param="/map/dataset_name">"park_res_full_filter"</rosparam>
+    <rosparam param="/map/dataset_name">"park_res_wo_fusion"</rosparam>
     <!-- 时间范围限制  *****改时间*****-->
     <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!park要去最前面的SB一段!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
     <rosparam param="/map/start_timestamp">1669288649.0</rosparam>
@@ -42,10 +42,10 @@
 
 
     <!-- =====================================================改结果路径=============================================================== -->>
-    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_backend_filter/poses/poses_withtime.txt"</rosparam>
+    <rosparam param="/map/kf_pose_url">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/poses/poses_withtime.txt"</rosparam>
     <!-- slam记录的结果点云结果路径 *****改路径*****-->
-    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_backend_filter/result/corner/cloud"</rosparam>
-    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_no_distort_featurori_config1_backend_filter/result/surf/cloud"</rosparam>
+    <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/result/corner/cloud"</rosparam>
+    <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_res_wo_fusion/result/surf/cloud"</rosparam>
 
 
 
@@ -53,6 +53,7 @@
     <!-- 特征保留的voxel大小 -->
     <rosparam param="/map/corner_leafsize">0.2</rosparam>
     <rosparam param="/map/surf_leafsize">0.4</rosparam>
+    <rosparam param="/map/full_leafsize">0.2</rosparam>
 
     <!-- 是否保存原始特征积累的结果作为真值/结果 -->
     <rosparam param="/map/also_save_ori_fpcloud">false</rosparam>

@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
       res_surf_cloud_dir;
   bool also_save_ori_fpcloud;
   bool ignore_ground_fn;
-  float corner_leafsize, surf_leafsize;
+  float corner_leafsize, surf_leafsize, full_leafsize;
 
   nodeHandler.param("/map/voxelsize", voxelsize, (float)0.05);
   nodeHandler.param<std::string>("/map/slam_map_save_path", slam_map_save_path, "/mnt/d");
@@ -106,6 +106,7 @@ int main(int argc, char **argv) {
   nodeHandler.param<std::string>("/map/res_surf_cloud_dir", res_surf_cloud_dir, "machi");
   nodeHandler.param<float>("/map/corner_leafsize", corner_leafsize, 0.2);
   nodeHandler.param<float>("/map/surf_leafsize", surf_leafsize, 0.4);
+  nodeHandler.param<float>("/map/full_leafsize", full_leafsize, 0.2);
   nodeHandler.param<bool>("/map/also_save_ori_fpcloud", also_save_ori_fpcloud, false);
   nodeHandler.param<bool>("/map/ignore_ground_fn", ignore_ground_fn, false);
 
@@ -156,6 +157,7 @@ int main(int argc, char **argv) {
   // res
   CloudXYZI::Ptr res_corner_full(new CloudXYZI());
   CloudXYZI::Ptr res_surf_full(new CloudXYZI());
+  CloudXYZI::Ptr res_full(new CloudXYZI());
 
 
   ///////// 读关键帧timestamp ///////////
@@ -336,6 +338,7 @@ int main(int argc, char **argv) {
 
 
         // 读取结果点云，为其寻找最近
+        CloudXYZI::Ptr rescloud_full_this(new CloudXYZI());
         CloudXYZI::Ptr rescloud_corner_this(new CloudXYZI());
         CloudXYZI::Ptr rescloud_surf_this(new CloudXYZI());
         pcl::io::loadPCDFile(url_corner_rescloud_this, *rescloud_corner_this);
@@ -369,6 +372,10 @@ int main(int argc, char **argv) {
         KumoAccumulateFeatureCloud(*rescloud_corner_this, *res_corner_full, pose_eigen4f);
         KumoAccumulateFeatureCloud(*rescloud_surf_this, *res_surf_full, pose_eigen4f);
 
+
+        *rescloud_full_this += *rescloud_corner_this;
+        *rescloud_full_this += *rescloud_surf_this;
+        KumoAccumulateFeatureCloud(*rescloud_full_this, *res_full, pose_eigen4f);
         // 送进去！！！！
       } else {
         std::cout << "!!!! no such file !!! " << timestamp << std::endl;
@@ -384,6 +391,7 @@ int main(int argc, char **argv) {
 
     KumoSaveFeatureCloud(res_corner_full, corner_leafsize, "res_corner");
     KumoSaveFeatureCloud(res_surf_full, surf_leafsize, "res_surf");
+    KumoSaveFeatureCloud(res_full, full_leafsize, "res_full");
   }
   f_read_pose.close();
 

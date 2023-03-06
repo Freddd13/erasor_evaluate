@@ -52,6 +52,7 @@
     <!-- 特征保留的voxel大小 -->
     <rosparam param="/map/corner_leafsize">0.2</rosparam>
     <rosparam param="/map/surf_leafsize">0.4</rosparam>
+    <rosparam param="/map/full_leafsize">0.2</rosparam>
 
     <!-- 是否保存原始特征积累的结果作为真值/结果 -->
     <rosparam param="/map/also_save_ori_fpcloud">false</rosparam>

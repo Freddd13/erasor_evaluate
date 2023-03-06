@@ -204,10 +204,14 @@ if __name__ == "__main__":
     import os
 
     parser = argparse.ArgumentParser(description='Analysis of static map')
-    parser.add_argument('--cgt', default='/mnt/d/dataset/dynamic_self/test/park_feature_slam_res_wo_distort_ori_res_corner__to__voxel_0.200000.pcd', type=str)
-    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/paaa_res_corner__to__voxel_0.200000.pcd', type=str)
-    parser.add_argument('--sgt', default='/mnt/d/dataset/dynamic_self/test/park_feature_slam_res_wo_distort_ori_res_surf__to__voxel_0.400000.pcd', type=str)
-    parser.add_argument('--sest', default='/mnt/d/dataset/dynamic_self/test/paaa_res_surf__to__voxel_0.400000.pcd', type=str)
+    parser.add_argument('--cgt', default='/mnt/d/dataset/dynamic_self/test/machi_feature_gt_wo_distort_ori_res_corner__to__voxel_0.200000.pcd', type=str)
+    parser.add_argument('--cest', default='/mnt/d/dataset/dynamic_self/test/machi_res_full_res_corner__to__voxel_0.200000.pcd', type=str)
+
+    parser.add_argument('--sgt', default='/mnt/d/dataset/dynamic_self/test/machi_feature_gt_wo_distort_ori_res_surf__to__voxel_0.400000.pcd', type=str)
+    parser.add_argument('--sest', default='/mnt/d/dataset/dynamic_self/test/machi_res_full_res_surf__to__voxel_0.400000.pcd', type=str)
+
+    parser.add_argument('--fullgt', default='/mnt/d/dataset/dynamic_self/test/machi_feature_gt_wo_distort_ori_res_surf__to__voxel_0.400000.pcd', type=str)
+    parser.add_argument('--fullest', default='/mnt/d/dataset/dynamic_self/test/machi_res_full_res_surf__to__voxel_0.400000.pcd', type=str)    
     args = parser.parse_args()
 
     ########################### corner ################################
@@ -241,3 +245,18 @@ if __name__ == "__main__":
     print("\n =================== surf map ====================".format(surf_voxelsize))
     evaluate(sgt_data, starget_data, voxelsize=surf_voxelsize)
 
+
+
+    ########################### full #############################
+    print("full GT Path: " + args.fullgt)
+    print("full Estimate Path: " + args.fullest)
+
+    assert os.path.isfile(args.fullgt), "full GT path does not exist"
+    assert os.path.isfile(args.fullest), "full Est path does not exist"
+    fullgt_data = load_pcd(args.fullgt)
+    fulltarget_data = load_pcd(args.fullest)
+
+    # 评估
+    full_voxelsize = 0.2
+    print("\n =================== full map ====================".format(full_voxelsize))
+    evaluate(fullgt_data, fulltarget_data, voxelsize=full_voxelsize)
