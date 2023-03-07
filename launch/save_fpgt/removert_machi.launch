@@ -47,9 +47,9 @@
 
 
     <!-- removert -->
-    <rosparam param="/map/output_corner_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/corner/cloud"</rosparam>
-    <rosparam param="/map/output_surf_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/surf/cloud"</rosparam>
-    <rosparam param="/map/output_pose_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/test/"</rosparam>
+    <rosparam param="/map/output_corner_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/machi/corner/cloud"</rosparam>
+    <rosparam param="/map/output_surf_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/machi/surf/cloud"</rosparam>
+    <rosparam param="/map/output_pose_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/machi/"</rosparam>
 
 
 

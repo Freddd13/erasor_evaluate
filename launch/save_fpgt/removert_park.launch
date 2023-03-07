@@ -1,6 +1,6 @@
 <launch>
 
-<node name="slam_fp_mapgen" pkg="erasor" type="slam_fp_mapgen" output="screen">
+<node name="rmvt" pkg="erasor" type="rmvt" output="screen">
     <rosparam param="/map/voxelsize">0.2</rosparam>		
     <rosparam param="/map/target_rosbag">"05_2350_to_2670_w_interval_2_node.bag"</rosparam>
 
@@ -47,6 +47,11 @@
     <rosparam param="/map/res_corner_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_FPGT_w_o_distort/result/corner/cloud"</rosparam>
     <rosparam param="/map/res_surf_cloud_dir">"/mnt/d/dataset/dynamic_self/test/machi/park_FPGT_w_o_distort/result/surf/cloud"</rosparam>
 
+
+    <!-- removert -->
+    <rosparam param="/map/output_corner_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/park/corner/cloud"</rosparam>
+    <rosparam param="/map/output_surf_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/park/surf/cloud"</rosparam>
+    <rosparam param="/map/output_pose_dir">"/mnt/d/dataset/dynamic_self/test/cloud_for_removert/park/"</rosparam>
 
 
 
